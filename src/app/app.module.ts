@@ -7,6 +7,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {SharedModule} from './shared/shared.module';
 
 import {AppComponent} from './app.component';
+import {DatePipe, DecimalPipe, HashLocationStrategy, LocationStrategy} from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,10 @@ import {AppComponent} from './app.component';
     AppRoutingModule,
     SharedModule
   ],
-  providers: [],
+  providers: [
+    {provide: LocationStrategy, useClass: HashLocationStrategy},
+     DatePipe,
+     DecimalPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

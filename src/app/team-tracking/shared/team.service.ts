@@ -5,6 +5,7 @@ import {CoreService} from '../../core/core.service';
 import {Team} from './team.model';
 import {TeamData} from './team-data.model';
 import {Game} from './game.model';
+import {DatePipe} from '@angular/common';
 
 @Injectable({
     providedIn: 'root'
@@ -24,7 +25,7 @@ export class TeamService {
     public teamIds = new BehaviorSubject<number[]>([]);
     public teamIds$: Observable<number[]> = this.teamIds.asObservable();
 
-    constructor(private http: HttpClient, private coreService: CoreService) {
+    constructor(private http: HttpClient, private datePipe: DatePipe, private coreService: CoreService) {
     }
 
     readTeamIds(): Observable<number[]> {
@@ -81,15 +82,20 @@ export class TeamService {
         let params = new HttpParams();
         params = params.append('page', 0);
         params = params.append('team_ids[]', teamId);
-        // for (const questionId of questionIds) {
-        params = params.append('dates[]', '2022-12-02');
-        params = params.append('dates[]', '2022-12-03');
-        params = params.append('dates[]', '2022-12-04');
-        params = params.append('dates[]', '2022-12-05');;
-        // }
+
+        const dates: string[] = [...Array(12)].map((_, i) => {
+            const d = new Date();
+            d.setDate(d.getDate() - i);
+            return this.datePipe.transform(d, 'yyyy-MM-dd') ?? 'undefined';
+        });
+
+        console.log(dates);
+        dates.filter(date => date != 'undefined').forEach(date => {
+            params = params.append('dates[]', date);
+        });
+        console.log(params);
 
         return this.http.get<Team>(`https://free-nba.p.rapidapi.com/games`, {params: params, headers: this._httpOptions.headers})
                    .pipe(tap(response => console.log(response)), catchError(this.coreService.handleError<any>('getGameResults', null)));
-
     }
 }

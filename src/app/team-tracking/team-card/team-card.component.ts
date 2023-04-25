@@ -26,9 +26,9 @@ export class TeamCardComponent implements OnInit, OnDestroy {
         this.teamService.deleteTeamId(this.team.id);
     }
 
-    // get icon() {
-    //
-    // }
+    get icon() {
+      return `https://interstate21.com/nba-logos/${this.team.abbreviation}.png`
+    }
 
     ngOnDestroy(): void {
         this.subscriptions.unsubscribe();

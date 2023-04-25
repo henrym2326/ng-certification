@@ -6,6 +6,9 @@
         </button>
     </mat-card-title>
     <mat-card-subtitle>{{team.conference}}ern Conference</mat-card-subtitle>
+    <mat-card-content>
+        <img class="icon" [src]="icon">
+    </mat-card-content>
     <mat-card-actions>
         <button id="results{{team.abbreviation}}" mat-raised-button routerLink="./results/{{team.id}}" color="primary" aria-label="See game results" title="See game results">
             See game results >>
