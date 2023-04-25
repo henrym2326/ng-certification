@@ -18,10 +18,52 @@ export class TeamService {
         })
     };
 
-    public teamCodes = new BehaviorSubject<string[]>([]);
-    public teamCodes$: Observable<string[]> = this.teamCodes.asObservable();
+    private _TEAM_IDS: string = 'teamIds';
+
+    public teamIds = new BehaviorSubject<number[]>([]);
+    public teamIds$: Observable<number[]> = this.teamIds.asObservable();
 
     constructor(private http: HttpClient, private coreService: CoreService) {
+    }
+
+    readTeamIds(): Observable<number[]> {
+        let teamIds: number [] = this.getTeamIds();
+        console.log(localStorage.getItem(this._TEAM_IDS));
+        console.log([...teamIds]);
+        if (teamIds) {
+            this.teamIds.next([...teamIds]);
+        }
+        return this.teamIds$;
+    }
+
+    addTeamId(teamId: number) {
+        let teamIds: number [] = this.getTeamIds();
+        console.log(teamId);
+        if (!teamIds.includes(teamId)) {
+            this.teamIds.next([...teamIds, teamId]);
+            console.log([...teamIds]);
+            localStorage.setItem(this._TEAM_IDS, [...teamIds, teamId].join(','));
+        }
+    }
+
+    deleteTeamId(teamId: number) {
+        console.log(teamId);
+        let teamIds: number [] = this.getTeamIds();
+        // console.log([...this.teamIds]);
+        teamIds = teamIds.filter(e => e !== teamId);
+        this.teamIds.next([...teamIds]);
+        // console.log([...this.teamIds]);
+        if (teamIds.length) {
+            localStorage.setItem(this._TEAM_IDS, teamIds.join(','));
+            console.log(teamId);
+        } else {
+            localStorage.removeItem(this._TEAM_IDS);
+            console.log(teamId);
+        }
+    }
+
+    private getTeamIds() {
+        return (localStorage.getItem(this._TEAM_IDS)?.split(',') || []).map(teamId => parseInt(teamId, 10));
     }
 
     getAllTeams(): Observable<TeamData[]> {

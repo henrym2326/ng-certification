@@ -1,1 +1,22 @@
-<p>team-tracking works!</p>
+<div class="container-fluid">
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="formGroup">
+        <div class="row">
+            <mat-form-field appearance="fill" floatLabel="always">
+                <mat-label>Team</mat-label>
+                <mat-select id="teamSelect" formControlName="teamId" [required]="true" placeholder="Select a team">
+                    <mat-option *ngFor="let team of teams" [value]="team.id">
+                        {{team.city}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <button id="trackBtn" mat-raised-button color="primary" type="submit">Track Team</button>
+        </div>
+    </form>
+
+    <div *ngFor="let teamId of teamIds$ | async ">
+        {{teamId}}
+    </div>
+
+</div>
