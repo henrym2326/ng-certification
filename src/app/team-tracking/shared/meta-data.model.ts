@@ -1,4 +1,4 @@
-export interface TeamMeta {
+export interface MetaData {
     current_page: number,
     next_page: number,
     per_page: number,

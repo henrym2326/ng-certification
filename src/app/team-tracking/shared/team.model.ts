@@ -1,7 +1,7 @@
 import {TeamData} from './team-data.model';
-import {TeamMeta} from './team-meta.model';
+import {MetaData} from './meta-data.model';
 
 export interface Team {
     data: TeamData [],
-    meta: TeamMeta
+    meta: MetaData
 }

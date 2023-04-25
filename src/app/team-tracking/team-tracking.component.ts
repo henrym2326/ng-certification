@@ -17,6 +17,10 @@ export class TeamTrackingComponent implements OnInit, OnDestroy {
 
     teams: TeamData[] = [];
 
+    teamsMap: {
+        [id: number]: TeamData;
+    } = {};
+
     teamIds$!: Observable<number[]>;
 
     constructor(private fb: FormBuilder, private teamService: TeamService) {
@@ -26,6 +30,7 @@ export class TeamTrackingComponent implements OnInit, OnDestroy {
         this.subscriptions.add(this.teamService.getAllTeams().subscribe(teams => {
             console.log(teams);
             this.teams = teams;
+            teams.forEach(team => this.teamsMap[team.id] = team);
         }));
 
         this.teamIds$ = this.teamService.readTeamIds();

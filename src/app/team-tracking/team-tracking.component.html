@@ -16,7 +16,7 @@
     </form>
 
     <div *ngFor="let teamId of teamIds$ | async ">
-        {{teamId}}
+        <app-team-card *ngIf="teamsMap[teamId]" [team]=teamsMap[teamId]></app-team-card>
     </div>
 
 </div>
