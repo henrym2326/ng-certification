@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {BehaviorSubject, catchError, concatMap, EMPTY, expand, map, Observable, of, reduce, switchMap, tap, toArray} from 'rxjs';
+import {catchError, concatMap, EMPTY, expand, map, Observable, of, reduce, switchMap, tap, toArray} from 'rxjs';
 import {CoreService} from '../../core/core.service';
 import {Team} from './team.model';
 import {TeamData} from './team-data.model';
@@ -22,45 +22,33 @@ export class TeamService {
 
     private _TEAM_IDS: string = 'teamIds';
 
-    public teamIds = new BehaviorSubject<number[]>([]);
-    public teamIds$: Observable<number[]> = this.teamIds.asObservable();
-
     constructor(private http: HttpClient, private store: Store, private datePipe: DatePipe, private coreService: CoreService) {
     }
 
     readTeamIds(): Observable<number[]> {
         let teamIds: number [] = this.getTeamIds();
-        // console.log(localStorage.getItem(this._TEAM_IDS));
-        // console.log([...teamIds]);
         if (teamIds) {
-            this.teamIds.next([...teamIds]);
+            this.store.setTeamIds(teamIds);
         }
-        return this.teamIds$;
+        return this.store.getTeamIds();
     }
 
     addTeamId(teamId: number) {
         let teamIds: number [] = this.getTeamIds();
-        // console.log(teamId);
         if (!teamIds.includes(teamId)) {
-            this.teamIds.next([...teamIds, teamId]);
-            // console.log([...teamIds]);
+            this.store.setTeamIds([...teamIds, teamId]);
             localStorage.setItem(this._TEAM_IDS, [...teamIds, teamId].join(','));
         }
     }
 
     deleteTeamId(teamId: number) {
-        // console.log(teamId);
         let teamIds: number [] = this.getTeamIds();
-        // console.log([...this.teamIds]);
         teamIds = teamIds.filter(e => e !== teamId);
-        this.teamIds.next([...teamIds]);
-        // console.log([...this.teamIds]);
+        this.store.setTeamIds(teamIds);
         if (teamIds.length) {
             localStorage.setItem(this._TEAM_IDS, teamIds.join(','));
-            // console.log(teamId);
         } else {
             localStorage.removeItem(this._TEAM_IDS);
-            // console.log(teamId);
         }
     }
 
@@ -90,11 +78,9 @@ export class TeamService {
             return this.datePipe.transform(d, 'yyyy-MM-dd');
         });
 
-        // console.log(dates);
         dates.forEach(date => {
             params = params.append('dates[]', date!);
         });
-        // console.log(params);
 
         return this.http.get<Game>(`https://free-nba.p.rapidapi.com/games`, {params: params, headers: this._httpOptions.headers})
                    .pipe(map(res => res.data), switchMap(data => data), concatMap(game => of({...game, team_id: teamId})), toArray(),

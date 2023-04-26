@@ -1,7 +1,8 @@
 <mat-card>
     <mat-card-title>
         {{team.city}} [{{team.abbreviation}}]
-        <button id="remove{{team.abbreviation}}" mat-button color="primary" aria-label="Remove Team" title="Remove Team" (click)="remove()">
+        <button id="remove{{team.abbreviation}}" mat-button color="primary" aria-label="Remove Team" title="Remove Team" (click)="remove()"
+                style="float: right">
             <mat-icon fontIcon="close"></mat-icon>
         </button>
     </mat-card-title>
@@ -9,28 +10,29 @@
     <mat-card-content>
         <mat-divider></mat-divider>
 
-        <div *ngIf="!!(games$ | async)?.length; else no_results">
-            Results for the past 12 days:
+        <div *ngIf="!!(games$ | async)?.length; else no_results" style="padding-top: 20px">
+            <div>Results for the past 12 days:</div>
 
             <ng-container *ngFor="let game of games$ | async">
-                <div *ngIf="getScoreDiff(game) > 0">
-                    W
-                </div>
-                <div *ngIf="getScoreDiff(game) < 0">
-                    L
-                </div>
-                <div *ngIf="getScoreDiff(game) == 0">
-                    D
-                </div>
-                <!--                        {{game | json}}-->
+                <ng-container *ngIf="getScoreDiff(game) > 0" style="color:green">
+                    <span style="color:green; padding-right: 10px">W</span>
+                </ng-container>
+                <ng-container *ngIf="getScoreDiff(game) < 0">
+                    <span style="color:red; padding-right: 10px">L</span>
+                </ng-container>
+                <ng-container *ngIf="getScoreDiff(game) == 0">
+                    <span style="color:black; padding-right: 10px">D</span>
+                </ng-container>
             </ng-container>
+            <p></p>
 
             <div>Avg pts scored: <b>{{avgPointsScored | number: '1.0-0'}}</b></div>
             <div>Avg pts conceded: <b>{{avgPointsConceded| number: '1.0-0'}}</b></div>
+            <p></p>
         </div>
 
         <ng-template #no_results>
-            No results for the past 12 days
+            <div>No results for the past 12 days</div>
         </ng-template>
 
         <div>
@@ -38,9 +40,9 @@
         </div>
     </mat-card-content>
     <mat-card-actions>
-        <button id="results{{team.abbreviation}}" mat-raised-button routerLink="./results/{{team.abbreviation}}" color="primary" aria-label="See game results"
-                title="See game results">
+        <button id="results{{team.abbreviation}}" mat-raised-button routerLink="./results/{{team.abbreviation}}" color="primary"
+                aria-label="See game results" title="See game results">
             See game results >>
         </button>
     </mat-card-actions>
-</mat-card>
+</mat-card><p></p>

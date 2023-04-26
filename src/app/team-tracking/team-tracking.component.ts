@@ -41,7 +41,7 @@ export class TeamTrackingComponent implements OnInit, OnDestroy {
             // console.log(this.form.value);
             this.teamService.addTeamId(this.form.value['teamId']);
         } else {
-            alert('Please select team"');
+            alert('Please select a team');
         }
     }
 
