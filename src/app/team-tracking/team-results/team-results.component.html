@@ -1,4 +1,33 @@
-<button id="backBtn" mat-raised-button routerLink="/team-tracking" color="primary" aria-label="Back to all team stats" title="Back to all team stats">
-    << Back to all team stats
-</button>
+<mat-card>
+    <mat-card-title>
+        {{team.city}} [{{team.abbreviation}}]
+    </mat-card-title>
+    <mat-card-subtitle>{{team.conference}}ern Conference</mat-card-subtitle>
+    <mat-card-content>
+        <mat-divider></mat-divider>
+
+        <div *ngIf="!!(games$ | async)?.length; else no_results">
+            <span> Scores of past 12 days:</span>
+            <p></p>
+            <ng-container *ngFor="let game of games$ | async">
+                <b>{{game.home_team.abbreviation}}</b> {{game.home_team_score}} - {{game.visitor_team_score}}
+                <b>{{game.visitor_team.abbreviation}}</b>
+                <p></p>
+            </ng-container>
+        </div>
+
+        <ng-template #no_results>
+            No results for the past 12 days
+        </ng-template>
+    </mat-card-content>
+    <mat-card-actions>
+        <button id="backBtn" mat-raised-button routerLink="/team-tracking" color="primary" aria-label="Back to all team stats"
+                title="Back to all team stats">
+            << Back to all team stats
+        </button>
+
+    </mat-card-actions>
+</mat-card>
+
+
 

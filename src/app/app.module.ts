@@ -8,6 +8,7 @@ import {SharedModule} from './shared/shared.module';
 
 import {AppComponent} from './app.component';
 import {DatePipe, DecimalPipe, HashLocationStrategy, LocationStrategy} from '@angular/common';
+import {Store} from './store';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import {DatePipe, DecimalPipe, HashLocationStrategy, LocationStrategy} from '@an
     SharedModule
   ],
   providers: [
-    {provide: LocationStrategy, useClass: HashLocationStrategy},
+     Store,
+     {provide: LocationStrategy, useClass: HashLocationStrategy},
      DatePipe,
      DecimalPipe],
   bootstrap: [AppComponent]

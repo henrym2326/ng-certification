@@ -1,9 +1,10 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Subscription} from 'rxjs';
+import {map, Observable, Subscription} from 'rxjs';
 import {TeamService} from '../shared/team.service';
 import {Game} from '../shared/game.model';
 import {TeamData} from '../shared/team-data.model';
 import {GameData} from '../shared/game-data.model';
+import {Store} from '../../store';
 
 @Component({
     selector: 'app-team-card', templateUrl: './team-card.component.html', styleUrls: ['./team-card.component.css']
@@ -14,21 +15,57 @@ export class TeamCardComponent implements OnInit, OnDestroy {
 
     @Input() team!: TeamData;
 
-    gameResults!: GameData[];
+    games$!: Observable<GameData[]>;
 
-    constructor(private teamService: TeamService) {
+    avgPointsScored!: number;
+    avgPointsConceded!: number;
+
+    constructor(private store: Store, private teamService: TeamService) {
     }
 
     ngOnInit(): void {
-        this.subscriptions.add(this.teamService.getGameResults(this.team.id).subscribe(gameResults => this.gameResults = gameResults.data));
+        this.games$ = this.store.getGames().pipe(map(games => games[this.team.id]));
+        this.subscriptions.add(this.store.getGames().pipe(map(games => games[this.team.id])).subscribe(games => this.calAvgPoints(games)));
+        this.subscriptions.add(this.teamService.getGames(this.team.id).subscribe());
     }
 
-    remove() {
+    remove(): void {
         this.teamService.deleteTeamId(this.team.id);
     }
 
-    get icon() {
-      return `https://interstate21.com/nba-logos/${this.team.abbreviation}.png`
+    get icon(): string {
+        return `https://interstate21.com/nba-logos/${this.team.abbreviation}.png`;
+    }
+
+    getScoreDiff(game: GameData): number {
+        if (this.isHomeTeam(game)) {
+            return game.home_team_score - game.visitor_team_score;
+        } else {
+            return game.visitor_team_score - game.home_team_score;
+        }
+    }
+
+    calAvgPoints(games: GameData[]): void {
+        let pointsScored: number = 0;
+        let pointsConceded: number = 0;
+        // console.log(games);
+        if (games) {
+            games.forEach((game, i) => {
+                if (this.isHomeTeam(game)) {
+                    pointsScored = pointsScored + game.home_team_score;
+                    pointsConceded = pointsConceded + game.visitor_team_score;
+                } else {
+                    pointsScored = pointsScored + game.visitor_team_score;
+                    pointsConceded = pointsConceded + game.home_team_score;
+                }
+            });
+            this.avgPointsScored = pointsScored / games.length;
+            this.avgPointsConceded = pointsConceded / games.length;
+        }
+    }
+
+    isHomeTeam(game: GameData): boolean {
+        return game.team_id == game.home_team.id;
     }
 
     ngOnDestroy(): void {

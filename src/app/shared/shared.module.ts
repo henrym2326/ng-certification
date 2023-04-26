@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { HttpClientModule} from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule} from '@angular/material/icon';
+import {MatDividerModule} from '@angular/material/divider';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import { MatIconModule} from '@angular/material/icon';
     MatButtonModule,
     MatCardModule,
     MatChipsModule,
+    MatDividerModule,
     MatIconModule,
     MatFormFieldModule,
     MatSelectModule
@@ -30,6 +32,7 @@ import { MatIconModule} from '@angular/material/icon';
     MatButtonModule,
     MatCardModule,
     MatChipsModule,
+    MatDividerModule,
     MatIconModule,
     MatFormFieldModule,
     MatSelectModule
