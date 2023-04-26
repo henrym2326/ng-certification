@@ -3,6 +3,7 @@ import {Subscription} from 'rxjs';
 import {TeamService} from '../shared/team.service';
 import {Game} from '../shared/game.model';
 import {TeamData} from '../shared/team-data.model';
+import {GameData} from '../shared/game-data.model';
 
 @Component({
     selector: 'app-team-card', templateUrl: './team-card.component.html', styleUrls: ['./team-card.component.css']
@@ -13,13 +14,13 @@ export class TeamCardComponent implements OnInit, OnDestroy {
 
     @Input() team!: TeamData;
 
-    gameResults!: Game;
+    gameResults!: GameData[];
 
     constructor(private teamService: TeamService) {
     }
 
     ngOnInit(): void {
-        this.subscriptions.add(this.teamService.getGameResults(this.team.id).subscribe(gameResults => this.gameResults = gameResults));
+        this.subscriptions.add(this.teamService.getGameResults(this.team.id).subscribe(gameResults => this.gameResults = gameResults.data));
     }
 
     remove() {

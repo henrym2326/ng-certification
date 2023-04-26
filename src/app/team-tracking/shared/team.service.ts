@@ -14,7 +14,6 @@ export class TeamService {
 
     private _httpOptions = {
         headers: new HttpHeaders({
-            'Content-Type': 'application/json',
             'X-RapidAPI-Key': '2QMXSehDLSmshDmRQcKUIAiQjIZAp1UvKUrjsnewgqSP6F5oBX',
             'X-RapidAPI-Host': 'free-nba.p.rapidapi.com'
         })
@@ -75,7 +74,7 @@ export class TeamService {
 
     private getTeams(page: number): Observable<Team> {
         return this.http.get<Team>(`https://free-nba.p.rapidapi.com/teams?page=${page}`, this._httpOptions)
-                   .pipe(tap(response => console.log(response)), catchError(this.coreService.handleError<any>('getTeams', null)));
+                   .pipe(tap(response => console.log(response)), catchError(this.coreService.handleError));
     }
 
     getGameResults(teamId: number): Observable<Game> {
@@ -83,19 +82,19 @@ export class TeamService {
         params = params.append('page', 0);
         params = params.append('team_ids[]', teamId);
 
-        const dates: string[] = [...Array(12)].map((_, i) => {
+        const dates: (string | null)[] = [...Array(12)].map((_, i) => {
             const d = new Date();
             d.setDate(d.getDate() - i);
-            return this.datePipe.transform(d, 'yyyy-MM-dd') ?? 'undefined';
+            return this.datePipe.transform(d, 'yyyy-MM-dd');
         });
 
         console.log(dates);
-        dates.filter(date => date != 'undefined').forEach(date => {
-            params = params.append('dates[]', date);
+        dates.forEach(date => {
+            params = params.append('dates[]', date!);
         });
         console.log(params);
 
-        return this.http.get<Team>(`https://free-nba.p.rapidapi.com/games`, {params: params, headers: this._httpOptions.headers})
-                   .pipe(tap(response => console.log(response)), catchError(this.coreService.handleError<any>('getGameResults', null)));
+        return this.http.get<Game>(`https://free-nba.p.rapidapi.com/games`, {params: params, headers: this._httpOptions.headers})
+                   .pipe(tap(response => console.log(response)), catchError(this.coreService.handleError));
     }
 }
