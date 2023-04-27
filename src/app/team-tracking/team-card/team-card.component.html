@@ -1,48 +1,50 @@
-<mat-card>
-    <mat-card-title>
-        {{team.city}} [{{team.abbreviation}}]
-        <button id="remove{{team.abbreviation}}" mat-button color="primary" aria-label="Remove Team" title="Remove Team" (click)="remove()"
-                style="float: right">
-            <mat-icon fontIcon="close"></mat-icon>
-        </button>
-    </mat-card-title>
-    <mat-card-subtitle>{{team.conference}}ern Conference</mat-card-subtitle>
-    <mat-card-content>
-        <mat-divider></mat-divider>
+<div class="pt-3">
+    <mat-card>
+        <mat-card-title>
+            {{team.city}} [{{team.abbreviation}}]
+            <button id="remove{{team.abbreviation}}" mat-button color="primary" aria-label="Remove Team" title="Remove Team" (click)="remove()"
+                    style="float: right">
+                <mat-icon fontIcon="close"></mat-icon>
+            </button>
+        </mat-card-title>
+        <mat-card-subtitle>{{team.conference}}ern Conference</mat-card-subtitle>
+        <mat-card-content>
+            <mat-divider class="pb-3"></mat-divider>
 
-        <div *ngIf="!!(games$ | async)?.length; else no_results" style="padding-top: 20px">
-            <div>Results for the past 12 days:</div>
+            <div class="row">
+                <div *ngIf="!!(games$ | async)?.length; else no_results" class="col-md-3 pb-3">
+                    <div>Results for the past 12 days:</div>
 
-            <ng-container *ngFor="let game of games$ | async">
-                <ng-container *ngIf="getScoreDiff(game) > 0">
-                    <span style="color:green;" class="results">W</span>
-                </ng-container>
-                <ng-container *ngIf="getScoreDiff(game) < 0">
-                    <span style="color:red;" class="results">L</span>
-                </ng-container>
-                <ng-container *ngIf="getScoreDiff(game) == 0">
-                    <span style="color:black;" class="results">D</span>
-                </ng-container>
-            </ng-container>
-            <p></p>
+                    <ng-container *ngFor="let game of games$ | async">
+                        <ng-container *ngIf="getScoreDiff(game) > 0">
+                            <span style="color:green;" class="results">W</span>
+                        </ng-container>
+                        <ng-container *ngIf="getScoreDiff(game) < 0">
+                            <span style="color:red;" class="results">L</span>
+                        </ng-container>
+                        <ng-container *ngIf="getScoreDiff(game) == 0">
+                            <span style="color:black;" class="results">D</span>
+                        </ng-container>
+                    </ng-container>
 
-            <div>Avg pts scored: <b>{{avgPointsScored | number: '1.0-0'}}</b></div>
-            <div>Avg pts conceded: <b>{{avgPointsConceded| number: '1.0-0'}}</b></div>
-            <p></p>
-        </div>
+                    <div class="pt-3">Avg pts scored: <b>{{avgPointsScored | number: '1.0-0'}}</b></div>
+                    <div class="pb-3">Avg pts conceded: <b>{{avgPointsConceded| number: '1.0-0'}}</b></div>
+                </div>
 
-        <ng-template #no_results>
-            <div>No results for the past 12 days</div>
-        </ng-template>
+                <ng-template #no_results>
+                    <div class="col-md-3 pb-3">No results for the past 12 days</div>
+                </ng-template>
 
-        <div>
-            <img class="icon" [src]="icon">
-        </div>
-    </mat-card-content>
-    <mat-card-actions>
-        <button id="results{{team.abbreviation}}" mat-raised-button routerLink="./results/{{team.abbreviation}}" color="primary"
-                aria-label="See game results" title="See game results">
-            See game results >>
-        </button>
-    </mat-card-actions>
-</mat-card><p></p>
+                <div class="col-md-9">
+                    <img class="icon" [src]="icon">
+                </div>
+            </div>
+        </mat-card-content>
+        <mat-card-actions>
+            <button id="results{{team.abbreviation}}" mat-raised-button routerLink="./results/{{team.abbreviation}}" color="primary"
+                    aria-label="See game results" title="See game results">
+                See game results >>
+            </button>
+        </mat-card-actions>
+    </mat-card>
+</div>
