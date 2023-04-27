@@ -32,11 +32,11 @@ export class TeamResultsComponent implements OnInit, OnDestroy {
             if (team != undefined) {
                 this.team = team;
                 this.games$ = this.store.getGames().pipe(map(games => games[this.team.id]));
-                this.subscriptions.add(this.teamService.getGames(this.team.id).subscribe());
             } else {
                 this.router.navigateByUrl('/team-tracking');
             }
         }));
+        this.subscriptions.add(this.teamService.getGames(this.team.id).subscribe());
     }
 
     ngOnDestroy() {
