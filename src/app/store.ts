@@ -1,7 +1,7 @@
 import {State} from './state';
-import {BehaviorSubject, Observable, distinctUntilChanged, pluck, tap, map} from 'rxjs';
-import {TeamData} from './team-tracking/shared/team-data.model';
-import {GameData} from './team-tracking/shared/game-data.model';
+import {BehaviorSubject, distinctUntilChanged, map, Observable} from 'rxjs';
+import {TeamData} from './team-tracking/shared/model/team-data.model';
+import {GameData} from './team-tracking/shared/model/game-data.model';
 
 const state: State = {
     teamIds: [], teams: [], games: {}

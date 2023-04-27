@@ -3,7 +3,7 @@
     <form [formGroup]="form" (ngSubmit)="submit()" class="formGroup" #formDirective="ngForm">
         <div class="row pb-3">
             <div>
-                <mat-form-field appearance="fill" floatLabel="always" style="padding-right: 20px">
+                <mat-form-field appearance="fill" floatLabel="always" class="pr-2">
                     <mat-label>Team</mat-label>
                     <mat-select id="teamSelect" formControlName="teamId" [required]="true" placeholder="Select a team">
                         <mat-option *ngFor="let team of teams$ | async" [value]="team.id">

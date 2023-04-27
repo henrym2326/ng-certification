@@ -3,8 +3,8 @@ import {Store} from '../../store';
 import {TeamService} from '../shared/team.service';
 import {ActivatedRoute, Route, Router} from '@angular/router';
 import {map, Observable, Subscription} from 'rxjs';
-import {GameData} from '../shared/game-data.model';
-import {TeamData} from '../shared/team-data.model';
+import {GameData} from '../shared/model/game-data.model';
+import {TeamData} from '../shared/model/team-data.model';
 
 @Component({
     selector: 'app-team-results', templateUrl: './team-results.component.html', styleUrls: ['./team-results.component.css']
@@ -29,12 +29,11 @@ export class TeamResultsComponent implements OnInit, OnDestroy {
             if (team != undefined) {
                 this.team = team;
                 this.games$ = this.store.getGames().pipe(map(games => games[this.team.id]));
+                this.subscriptions.add(this.teamService.getGames(this.team.id).subscribe());
             } else {
                 this.router.navigateByUrl('/team-tracking');
             }
         }));
-
-        this.subscriptions.add(this.teamService.getGames(this.team.id).subscribe());
     }
 
     ngOnDestroy() {

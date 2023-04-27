@@ -2,12 +2,12 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {catchError, concatMap, EMPTY, expand, map, Observable, of, reduce, switchMap, tap, toArray} from 'rxjs';
 import {CoreService} from '../../core/core.service';
-import {Team} from './team.model';
-import {TeamData} from './team-data.model';
-import {Game} from './game.model';
+import {Team} from './model/team.model';
+import {TeamData} from './model/team-data.model';
+import {Game} from './model/game.model';
 import {DatePipe} from '@angular/common';
 import {Store} from '../../store';
-import {GameData} from './game-data.model';
+import {GameData} from './model/game-data.model';
 
 @Injectable({
     providedIn: 'root'

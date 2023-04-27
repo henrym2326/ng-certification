@@ -1,11 +1,11 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {TeamService} from './shared/team.service';
-import {TeamData} from './shared/team-data.model';
+import {TeamData} from './shared/model/team-data.model';
 import {FormBuilder, FormGroup, NgForm, Validators} from '@angular/forms';
 import {Observable, Subscription} from 'rxjs';
 import {Store} from '../store';
-import {Game} from './shared/game.model';
-import {GameData} from './shared/game-data.model';
+import {Game} from './shared/model/game.model';
+import {GameData} from './shared/model/game-data.model';
 import {NgFor} from '@angular/common';
 
 @Component({
@@ -30,21 +30,15 @@ export class TeamTrackingComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.teams$! = this.store.getTeams();
-        this.subscriptions.add(this.store.getTeams().subscribe(teams => {
-            // if (!Object.keys(this.teamsMap).length)
-            teams.forEach(team => this.teamsMap[team.id] = team);
-        }));
-        this.subscriptions.add(this.teamService.getAllTeams().subscribe());
         this.teamIds$ = this.teamService.readTeamIds();
+        this.teams$! = this.store.getTeams();
+        this.subscriptions.add(this.teamService.getAllTeams().subscribe());
+        this.subscriptions.add(this.store.getTeams().subscribe(teams => teams.forEach(team => this.teamsMap[team.id] = team)));
     }
 
     submit() {
         if (this.form.valid) {
-            // console.log(this.form.value);
             this.teamService.addTeamId(this.form.value['teamId']);
-            // this.form.patchValue({teamId: ''});
-
             this.form.get('teamId')?.patchValue('');
             this.formDirective.resetForm();
         } else {

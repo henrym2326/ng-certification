@@ -1,9 +1,9 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {map, Observable, Subscription} from 'rxjs';
 import {TeamService} from '../shared/team.service';
-import {Game} from '../shared/game.model';
-import {TeamData} from '../shared/team-data.model';
-import {GameData} from '../shared/game-data.model';
+import {Game} from '../shared/model/game.model';
+import {TeamData} from '../shared/model/team-data.model';
+import {GameData} from '../shared/model/game-data.model';
 import {Store} from '../../store';
 
 @Component({
@@ -25,8 +25,8 @@ export class TeamCardComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.games$ = this.store.getGames().pipe(map(games => games[this.team.id]));
-        this.subscriptions.add(this.store.getGames().pipe(map(games => games[this.team.id])).subscribe(games => this.calAvgPoints(games)));
         this.subscriptions.add(this.teamService.getGames(this.team.id).subscribe());
+        this.subscriptions.add(this.store.getGames().pipe(map(games => games[this.team.id])).subscribe(games => this.calAvgPoints(games)));
     }
 
     remove(): void {
@@ -48,7 +48,7 @@ export class TeamCardComponent implements OnInit, OnDestroy {
     calAvgPoints(games: GameData[]): void {
         let pointsScored: number = 0;
         let pointsConceded: number = 0;
-        // console.log(games);
+
         if (games) {
             games.forEach((game, i) => {
                 if (this.isHomeTeam(game)) {
