@@ -48,6 +48,12 @@ export class TeamCardComponent implements OnInit, OnDestroy {
         }
     }
 
+    getGameResult(game: GameData): string {
+        if (this.getScoreDiff(game) > 0) return 'W';
+        if (this.getScoreDiff(game) < 0) return 'L';
+        return 'D';
+    }
+
     calAvgPoints(games: GameData[]): void {
         let pointsScored: number = 0;
         let pointsConceded: number = 0;

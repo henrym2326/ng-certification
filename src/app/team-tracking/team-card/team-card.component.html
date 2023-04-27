@@ -13,17 +13,19 @@
 
             <div class="row">
                 <div *ngIf="!!(games$ | async)?.length; else no_results" class="col-md-3 pb-3">
-                    <div>Results for the past 12 days:</div>
+                    <div class="pb-2">Results for the past 12 days:</div>
 
                     <ng-container *ngFor="let game of games$ | async">
-                        <ng-container *ngIf="getScoreDiff(game) > 0">
-                            <span style="color:green;" class="results">W</span>
-                        </ng-container>
-                        <ng-container *ngIf="getScoreDiff(game) < 0">
-                            <span style="color:red;" class="results">L</span>
-                        </ng-container>
-                        <ng-container *ngIf="getScoreDiff(game) == 0">
-                            <span style="color:black;" class="results">D</span>
+                        <ng-container [ngSwitch]="getGameResult(game)" >
+                            <ng-container *ngSwitchCase="'W'">
+                                <span class="dot won"></span>
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'L'">
+                                <span class="dot lost"></span>
+                            </ng-container>
+                            <ng-container *ngSwitchDefault>
+                                <span class="dot draw"></span>
+                            </ng-container>
                         </ng-container>
                     </ng-container>
 
