@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 import {Store} from '../../store';
 import {TeamService} from '../shared/team.service';
 import {ActivatedRoute, Route, Router} from '@angular/router';
@@ -7,7 +7,10 @@ import {GameData} from '../shared/model/game-data.model';
 import {TeamData} from '../shared/model/team-data.model';
 
 @Component({
-    selector: 'app-team-results', templateUrl: './team-results.component.html', styleUrls: ['./team-results.component.css']
+    selector: 'app-team-results',
+    templateUrl: './team-results.component.html',
+    styleUrls: ['./team-results.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TeamResultsComponent implements OnInit, OnDestroy {
 

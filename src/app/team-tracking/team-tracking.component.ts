@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {TeamService} from './shared/team.service';
 import {TeamData} from './shared/model/team-data.model';
 import {FormBuilder, FormGroup, NgForm, Validators} from '@angular/forms';
@@ -9,7 +9,10 @@ import {GameData} from './shared/model/game-data.model';
 import {NgFor} from '@angular/common';
 
 @Component({
-    selector: 'app-team-tracking', templateUrl: './team-tracking.component.html', styleUrls: ['./team-tracking.component.css']
+    selector: 'app-team-tracking',
+    templateUrl: './team-tracking.component.html',
+    styleUrls: ['./team-tracking.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TeamTrackingComponent implements OnInit, OnDestroy {
 

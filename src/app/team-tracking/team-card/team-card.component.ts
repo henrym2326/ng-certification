@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {map, Observable, Subscription} from 'rxjs';
 import {TeamService} from '../shared/team.service';
 import {Game} from '../shared/model/game.model';
@@ -7,7 +7,10 @@ import {GameData} from '../shared/model/game-data.model';
 import {Store} from '../../store';
 
 @Component({
-    selector: 'app-team-card', templateUrl: './team-card.component.html', styleUrls: ['./team-card.component.css']
+    selector: 'app-team-card',
+    templateUrl: './team-card.component.html',
+    styleUrls: ['./team-card.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TeamCardComponent implements OnInit, OnDestroy {
 
