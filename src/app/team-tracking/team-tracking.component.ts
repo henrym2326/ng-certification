@@ -1,11 +1,12 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {TeamService} from './shared/team.service';
 import {TeamData} from './shared/team-data.model';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, NgForm, Validators} from '@angular/forms';
 import {Observable, Subscription} from 'rxjs';
 import {Store} from '../store';
 import {Game} from './shared/game.model';
 import {GameData} from './shared/game-data.model';
+import {NgFor} from '@angular/common';
 
 @Component({
     selector: 'app-team-tracking', templateUrl: './team-tracking.component.html', styleUrls: ['./team-tracking.component.css']
@@ -13,6 +14,8 @@ import {GameData} from './shared/game-data.model';
 export class TeamTrackingComponent implements OnInit, OnDestroy {
 
     subscriptions: Subscription = new Subscription();
+
+    @ViewChild('formDirective') formDirective!: NgForm;
 
     form: FormGroup = this.fb.group({
         teamId: ['', Validators.required]
@@ -40,6 +43,10 @@ export class TeamTrackingComponent implements OnInit, OnDestroy {
         if (this.form.valid) {
             // console.log(this.form.value);
             this.teamService.addTeamId(this.form.value['teamId']);
+            // this.form.patchValue({teamId: ''});
+
+            this.form.get('teamId')?.patchValue('');
+            this.formDirective.resetForm();
         } else {
             alert('Please select a team');
         }

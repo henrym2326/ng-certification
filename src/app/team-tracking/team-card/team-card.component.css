@@ -2,3 +2,8 @@
     width: 150px;
     height: 150px;
 }
+
+.results {
+    font-weight: bold;
+    padding-right: 10px;
+}

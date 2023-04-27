@@ -14,14 +14,14 @@
             <div>Results for the past 12 days:</div>
 
             <ng-container *ngFor="let game of games$ | async">
-                <ng-container *ngIf="getScoreDiff(game) > 0" style="color:green">
-                    <span style="color:green; padding-right: 10px">W</span>
+                <ng-container *ngIf="getScoreDiff(game) > 0">
+                    <span style="color:green;" class="results">W</span>
                 </ng-container>
                 <ng-container *ngIf="getScoreDiff(game) < 0">
-                    <span style="color:red; padding-right: 10px">L</span>
+                    <span style="color:red;" class="results">L</span>
                 </ng-container>
                 <ng-container *ngIf="getScoreDiff(game) == 0">
-                    <span style="color:black; padding-right: 10px">D</span>
+                    <span style="color:black;" class="results">D</span>
                 </ng-container>
             </ng-container>
             <p></p>
