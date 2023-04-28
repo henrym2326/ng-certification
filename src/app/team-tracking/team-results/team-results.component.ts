@@ -1,7 +1,7 @@
-import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {Store} from '../../store';
 import {TeamService} from '../shared/team.service';
-import {ActivatedRoute, Route, Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {map, Observable, Subscription} from 'rxjs';
 import {GameData} from '../shared/model/game-data.model';
 import {TeamData} from '../shared/model/team-data.model';
@@ -12,6 +12,7 @@ import {TeamData} from '../shared/model/team-data.model';
     styleUrls: ['./team-results.component.css'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
+
 export class TeamResultsComponent implements OnInit, OnDestroy {
 
     subscriptions: Subscription = new Subscription();
@@ -21,7 +22,8 @@ export class TeamResultsComponent implements OnInit, OnDestroy {
 
     games$!: Observable<GameData[]>;
 
-    constructor(private router: Router, private route: ActivatedRoute, private store: Store, private teamService: TeamService) {
+    constructor(private router: Router, private route: ActivatedRoute, private store: Store, private teamService: TeamService,
+                private changeDetector: ChangeDetectorRef) {
     }
 
     ngOnInit(): void {
@@ -32,6 +34,7 @@ export class TeamResultsComponent implements OnInit, OnDestroy {
             if (team != undefined) {
                 this.team = {...team};
                 this.games$ = this.store.getGames().pipe(map(games => games[this.team.id]));
+                this.changeDetector.detectChanges();
             } else {
                 this.router.navigateByUrl('/team-tracking');
             }

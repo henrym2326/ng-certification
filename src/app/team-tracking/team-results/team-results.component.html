@@ -1,31 +1,35 @@
-<mat-card>
-    <mat-card-title>
+<div *ngIf="team else loading">
+    <mat-card>
+        <mat-card-title>
         {{team?.city}} [{{team?.abbreviation}}]
-    </mat-card-title>
+        </mat-card-title>
     <mat-card-subtitle>{{team?.conference}}ern Conference</mat-card-subtitle>
-    <mat-card-content>
-        <mat-divider class="pb-3"></mat-divider>
+        <mat-card-content>
+            <mat-divider class="pb-3"></mat-divider>
 
-        <div *ngIf="!!(games$ | async)?.length; else no_results">
-            <div class="pb-3">Scores of past 12 days:</div>
+            <div *ngIf="!!(games$ | async)?.length; else no_results">
+                <div class="pb-3">Scores of past 12 days:</div>
 
-            <ng-container *ngFor="let game of games$ | async">
-                <div class="pb-3">
+                <ng-container *ngFor="let game of games$ | async">
+                    <div class="pb-3">
                     <b>{{game.home_team?.abbreviation}}</b> {{game.home_team_score}} - {{game.visitor_team_score}}
                     <b>{{game.visitor_team?.abbreviation}}</b>
-                </div>
-            </ng-container>
-        </div>
+                    </div>
+                </ng-container>
+            </div>
 
-        <ng-template #no_results>
-            No results for the past 12 days
-        </ng-template>
-    </mat-card-content>
-    <mat-card-actions>
-        <button id="backBtn" mat-raised-button routerLink="/team-tracking" color="primary" aria-label="Back to all team stats"
-                title="Back to all team stats">
-            << Back to all team stats
-        </button>
+            <ng-template #no_results>
+                No results for the past 12 days
+            </ng-template>
+        </mat-card-content>
+        <mat-card-actions>
+            <button id="backBtn" mat-raised-button routerLink="/team-tracking" color="primary" aria-label="Back to all team stats"
+                    title="Back to all team stats">
+                << Back to all team stats
+            </button>
 
-    </mat-card-actions>
-</mat-card>
+        </mat-card-actions>
+    </mat-card>
+</div>
+
+<ng-template #loading></ng-template>

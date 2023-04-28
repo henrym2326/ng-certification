@@ -1,4 +1,4 @@
-<div class="pt-3">
+<div *ngIf="team else loading" class="pt-3">
     <mat-card>
         <mat-card-title>
             {{team?.city}} [{{team?.abbreviation}}]
@@ -16,7 +16,7 @@
                     <div class="pb-2">Results for the past 12 days:</div>
 
                     <ng-container *ngFor="let game of games$ | async">
-                        <ng-container [ngSwitch]="getGameResult(game)" >
+                        <ng-container [ngSwitch]="getGameResult(game)">
                             <ng-container *ngSwitchCase="'W'">
                                 <span class="dot won"></span>
                             </ng-container>
@@ -50,3 +50,5 @@
         </mat-card-actions>
     </mat-card>
 </div>
+
+<ng-template #loading></ng-template>

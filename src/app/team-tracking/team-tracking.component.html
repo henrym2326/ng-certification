@@ -1,5 +1,4 @@
 <div class="container-fluid">
-
     <form [formGroup]="form" (ngSubmit)="submit()" class="formGroup" #formDirective="ngForm">
         <div class="row pb-3">
             <div>
@@ -20,7 +19,7 @@
 
     <div class="row">
         <ng-container *ngFor="let teamId of teamIds$ | async ">
-            <app-team-card *ngIf="teamsMap[teamId]" [team]="teamsMap[teamId]" class="col-md-6"></app-team-card>
+            <app-team-card *ngIf="teamId" [teamId]="teamId" class="col-md-6"></app-team-card>
         </ng-container>
     </div>
 </div>
