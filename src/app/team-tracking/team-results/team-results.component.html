@@ -1,9 +1,9 @@
-<div *ngIf="team else loading">
+<div *ngIf="(team$ | async) && (games$ | async)  else loading">
     <mat-card>
         <mat-card-title>
-        {{team?.city}} [{{team?.abbreviation}}]
+            {{(team$ | async)?.city}} [{{(team$ | async)?.abbreviation}}]
         </mat-card-title>
-    <mat-card-subtitle>{{team?.conference}}ern Conference</mat-card-subtitle>
+        <mat-card-subtitle>{{(team$ | async)?.conference}}ern Conference</mat-card-subtitle>
         <mat-card-content>
             <mat-divider class="pb-3"></mat-divider>
 
@@ -12,8 +12,8 @@
 
                 <ng-container *ngFor="let game of games$ | async">
                     <div class="pb-3">
-                    <b>{{game.home_team?.abbreviation}}</b> {{game.home_team_score}} - {{game.visitor_team_score}}
-                    <b>{{game.visitor_team?.abbreviation}}</b>
+                        <b>{{game.home_team?.abbreviation}}</b> {{game.home_team_score}} - {{game.visitor_team_score}}
+                        <b>{{game.visitor_team?.abbreviation}}</b>
                     </div>
                 </ng-container>
             </div>
@@ -32,4 +32,6 @@
     </mat-card>
 </div>
 
-<ng-template #loading></ng-template>
+<ng-template #loading>
+    <mat-spinner></mat-spinner>
+</ng-template>

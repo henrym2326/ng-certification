@@ -1,5 +1,5 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {map, Observable, Subscription} from 'rxjs';
+import {ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {find, map, Observable, Subscription, switchMap} from 'rxjs';
 import {TeamService} from '../shared/team.service';
 import {TeamData} from '../shared/model/team-data.model';
 import {GameData} from '../shared/model/game-data.model';
@@ -17,26 +17,18 @@ export class TeamCardComponent implements OnInit, OnDestroy {
 
     @Input() teamId!: number;
 
-    team!: TeamData;
-    team$!: Observable<TeamData>;
+    team$!: Observable<TeamData | undefined>;
     games$!: Observable<GameData[]>;
 
     avgPointsScored!: number;
     avgPointsConceded!: number;
 
-    constructor(private store: Store, private teamService: TeamService, private changeDetector: ChangeDetectorRef) {
+    constructor(private store: Store, private teamService: TeamService) {
     }
 
     ngOnInit(): void {
-        this.subscriptions.add(this.store.getTeams().subscribe(teams => {
-            const team: TeamData | undefined = teams.find(team => team.id == this.teamId);
-            if (team != undefined) {
-                this.team = {...team};
-                this.games$ = this.store.getGames().pipe(map(games => games[this.teamId]));
-                this.subscriptions.add(this.store.getGames().pipe(map(games => games[this.teamId])).subscribe(games => this.calAvgPoints(games)));
-                this.changeDetector.detectChanges();
-            }
-        }));
+        this.team$ = this.store.getTeams().pipe(switchMap(teams => teams), find(team => team.id == this.teamId));
+        this.games$ = this.store.getGames().pipe(map(games => games[this.teamId]));
         this.subscriptions.add(this.teamService.getGames(this.teamId).subscribe());
     }
 
@@ -44,8 +36,8 @@ export class TeamCardComponent implements OnInit, OnDestroy {
         this.teamService.deleteTeamId(this.teamId);
     }
 
-    get icon(): string {
-        return `https://interstate21.com/nba-logos/${this.team.abbreviation}.png`;
+    getIcon(team: TeamData): string {
+        return `https://interstate21.com/nba-logos/${team.abbreviation}.png`;
     }
 
     getScoreDiff(game: GameData): number {
