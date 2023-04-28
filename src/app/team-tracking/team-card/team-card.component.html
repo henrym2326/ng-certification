@@ -1,13 +1,13 @@
 <div class="pt-3">
     <mat-card>
         <mat-card-title>
-            {{team?.city}} [{{team?.abbreviation}}]
-            <button id="remove{{team?.abbreviation}}" mat-button color="primary" aria-label="Remove Team" title="Remove Team" (click)="remove()"
+            {{team.city}} [{{team.abbreviation}}]
+            <button id="remove{{team.abbreviation}}" mat-button color="primary" aria-label="Remove Team" title="Remove Team" (click)="remove()"
                     style="float: right">
                 <mat-icon fontIcon="close"></mat-icon>
             </button>
         </mat-card-title>
-        <mat-card-subtitle>{{team?.conference}}ern Conference</mat-card-subtitle>
+        <mat-card-subtitle>{{team.conference}}ern Conference</mat-card-subtitle>
         <mat-card-content>
             <mat-divider class="pb-3"></mat-divider>
 
@@ -43,7 +43,7 @@
             </div>
         </mat-card-content>
         <mat-card-actions>
-            <button id="results{{team?.abbreviation}}" mat-raised-button routerLink="./results/{{team?.abbreviation}}" color="primary"
+            <button id="results{{team.abbreviation}}" mat-raised-button routerLink="./results/{{team.abbreviation}}" color="primary"
                     aria-label="See game results" title="See game results">
                 See game results >>
             </button>
