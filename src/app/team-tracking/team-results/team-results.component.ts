@@ -30,13 +30,14 @@ export class TeamResultsComponent implements OnInit, OnDestroy {
         this.subscriptions.add(this.store.getTeams().subscribe(teams => {
             const team: TeamData | undefined = teams.find(team => team.abbreviation == this.teamCode);
             if (team != undefined) {
-                this.team = team;
+                this.team = {...team};
                 this.games$ = this.store.getGames().pipe(map(games => games[this.team.id]));
             } else {
                 this.router.navigateByUrl('/team-tracking');
             }
         }));
-        this.subscriptions.add(this.teamService.getGames(this.team.id).subscribe());
+
+        if (this.team) this.subscriptions.add(this.teamService.getGames(this.team.id).subscribe());
     }
 
     ngOnDestroy(): void {
