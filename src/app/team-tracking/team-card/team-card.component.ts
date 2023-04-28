@@ -29,6 +29,7 @@ export class TeamCardComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.team$ = this.store.getTeams().pipe(switchMap(teams => teams), find(team => team.id == this.teamId));
         this.games$ = this.store.getGames().pipe(map(games => games[this.teamId]));
+        this.subscriptions.add(this.games$.subscribe(games => this.calAvgPoints(games)));
         this.subscriptions.add(this.teamService.getGames(this.teamId).subscribe());
     }
 
