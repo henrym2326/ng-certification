@@ -12,8 +12,8 @@
 
                 <ng-container *ngFor="let game of games$ | async">
                     <div class="pb-3">
-                        <b>{{game.home_team?.abbreviation}}</b> {{game.home_team_score}} - {{game.visitor_team_score}}
-                        <b>{{game.visitor_team?.abbreviation}}</b>
+                        <b>{{game.home_team.abbreviation}}</b> {{game.home_team_score}} - {{game.visitor_team_score}}
+                        <b>{{game.visitor_team.abbreviation}}</b>
                     </div>
                 </ng-container>
             </div>
