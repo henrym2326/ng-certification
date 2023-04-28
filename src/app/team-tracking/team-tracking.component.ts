@@ -4,9 +4,6 @@ import {TeamData} from './shared/model/team-data.model';
 import {FormBuilder, FormGroup, NgForm, Validators} from '@angular/forms';
 import {Observable, Subscription} from 'rxjs';
 import {Store} from '../store';
-import {Game} from './shared/model/game.model';
-import {GameData} from './shared/model/game-data.model';
-import {NgFor} from '@angular/common';
 
 @Component({
     selector: 'app-team-tracking',
@@ -27,8 +24,6 @@ export class TeamTrackingComponent implements OnInit, OnDestroy {
     teamIds$!: Observable<number[]>;
     teams$!: Observable<TeamData[]>;
 
-    teamsMap: { [id: number]: TeamData } = {};
-
     constructor(private fb: FormBuilder, private store: Store, private teamService: TeamService) {
     }
 
@@ -36,7 +31,6 @@ export class TeamTrackingComponent implements OnInit, OnDestroy {
         this.teamIds$ = this.teamService.readTeamIds();
         this.teams$ = this.store.getTeams();
         this.subscriptions.add(this.teamService.getAllTeams().subscribe());
-        this.subscriptions.add(this.store.getTeams().subscribe(teams => teams.forEach(team => this.teamsMap[team.id] = team)));
     }
 
     submit(): void {

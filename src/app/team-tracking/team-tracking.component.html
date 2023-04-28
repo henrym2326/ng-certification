@@ -1,26 +1,32 @@
-<div class="container-fluid">
+<div *ngIf="(teams$ | async)?.length else loading">
+    <div class="container-fluid">
+        <form [formGroup]="form" (ngSubmit)="submit()" class="formGroup" #formDirective="ngForm">
+            <div class="row pb-3">
+                <div>
+                    <mat-form-field appearance="fill" floatLabel="always" class="pr-2">
+                        <mat-label>Team</mat-label>
+                        <mat-select id="teamSelect" formControlName="teamId" [required]="true" placeholder="Select a team">
+                            <mat-option *ngFor="let team of teams$ | async" [value]="team.id">
+                                {{team.city}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <button id="trackBtn" mat-raised-button color="primary" type="submit">Track Team</button>
+                </div>
+            </div>
+        </form>
 
-    <form [formGroup]="form" (ngSubmit)="submit()" class="formGroup" #formDirective="ngForm">
-        <div class="row pb-3">
-            <div>
-                <mat-form-field appearance="fill" floatLabel="always" class="pr-2">
-                    <mat-label>Team</mat-label>
-                    <mat-select id="teamSelect" formControlName="teamId" [required]="true" placeholder="Select a team">
-                        <mat-option *ngFor="let team of teams$ | async" [value]="team.id">
-                            {{team.city}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-            <div>
-                <button id="trackBtn" mat-raised-button color="primary" type="submit">Track Team</button>
-            </div>
+        <div class="row">
+            <ng-container *ngFor="let teamId of teamIds$ | async ">
+                <app-team-card *ngIf="teamId" [teamId]="teamId" class="col-md-6"></app-team-card>
+            </ng-container>
         </div>
-    </form>
-
-    <div class="row">
-        <ng-container *ngFor="let teamId of teamIds$ | async ">
-            <app-team-card *ngIf="teamsMap[teamId]" [team]="teamsMap[teamId]" class="col-md-6"></app-team-card>
-        </ng-container>
     </div>
 </div>
+
+<ng-template #loading>
+    <mat-spinner></mat-spinner>
+</ng-template>
+

@@ -1,7 +1,6 @@
 import {ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {map, Observable, Subscription} from 'rxjs';
+import {find, map, Observable, Subscription, switchMap} from 'rxjs';
 import {TeamService} from '../shared/team.service';
-import {Game} from '../shared/model/game.model';
 import {TeamData} from '../shared/model/team-data.model';
 import {GameData} from '../shared/model/game-data.model';
 import {Store} from '../../store';
@@ -16,8 +15,9 @@ export class TeamCardComponent implements OnInit, OnDestroy {
 
     subscriptions: Subscription = new Subscription();
 
-    @Input() team!: TeamData;
+    @Input() teamId!: number;
 
+    team$!: Observable<TeamData | undefined>;
     games$!: Observable<GameData[]>;
 
     avgPointsScored!: number;
@@ -27,17 +27,17 @@ export class TeamCardComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.games$ = this.store.getGames().pipe(map(games => games[this.team.id]));
-        this.subscriptions.add(this.teamService.getGames(this.team.id).subscribe());
-        this.subscriptions.add(this.store.getGames().pipe(map(games => games[this.team.id])).subscribe(games => this.calAvgPoints(games)));
+        this.team$ = this.store.getTeams().pipe(switchMap(teams => teams), find(team => team.id == this.teamId));
+        this.games$ = this.store.getGames().pipe(map(games => games[this.teamId]));
+        this.subscriptions.add(this.teamService.getGames(this.teamId).subscribe());
     }
 
     remove(): void {
-        this.teamService.deleteTeamId(this.team.id);
+        this.teamService.deleteTeamId(this.teamId);
     }
 
-    get icon(): string {
-        return `https://interstate21.com/nba-logos/${this.team.abbreviation}.png`;
+    getIcon(team: TeamData): string {
+        return `https://interstate21.com/nba-logos/${team.abbreviation}.png`;
     }
 
     getScoreDiff(game: GameData): number {
@@ -74,7 +74,7 @@ export class TeamCardComponent implements OnInit, OnDestroy {
     }
 
     isHomeTeam(game: GameData): boolean {
-        return this.team.id == game.home_team.id;
+        return this.teamId == game.home_team.id;
     }
 
     ngOnDestroy(): void {
