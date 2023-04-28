@@ -14,7 +14,7 @@ import {GameData} from './model/game-data.model';
 })
 export class TeamService {
 
-    private _httpOptions = {
+    private _httpOptions: { headers: HttpHeaders } = {
         headers: new HttpHeaders({
             'X-RapidAPI-Key': '2QMXSehDLSmshDmRQcKUIAiQjIZAp1UvKUrjsnewgqSP6F5oBX', 'X-RapidAPI-Host': 'free-nba.p.rapidapi.com'
         })
@@ -26,22 +26,22 @@ export class TeamService {
     }
 
     readTeamIds(): Observable<number[]> {
-        let teamIds: number [] = this.getTeamIds();
+        const teamIds: number [] = this.getTeamIds();
         if (teamIds) {
             this.store.setTeamIds(teamIds);
         }
         return this.store.getTeamIds();
     }
 
-    addTeamId(teamId: number) {
-        let teamIds: number [] = this.getTeamIds();
+    addTeamId(teamId: number): void {
+        const teamIds: number [] = this.getTeamIds();
         if (!teamIds.includes(teamId)) {
             this.store.setTeamIds([...teamIds, teamId]);
             localStorage.setItem(this._TEAM_IDS, [...teamIds, teamId].join(','));
         }
     }
 
-    deleteTeamId(teamId: number) {
+    deleteTeamId(teamId: number): void {
         let teamIds: number [] = this.getTeamIds();
         teamIds = teamIds.filter(e => e !== teamId);
         this.store.setTeamIds(teamIds);
@@ -52,7 +52,7 @@ export class TeamService {
         }
     }
 
-    private getTeamIds() {
+    private getTeamIds(): number [] {
         return (localStorage.getItem(this._TEAM_IDS)?.split(',') || []).map(teamId => parseInt(teamId, 10));
     }
 
@@ -68,12 +68,12 @@ export class TeamService {
     }
 
     getGames(teamId: number): Observable<GameData[]> {
-        let params = new HttpParams();
+        let params: HttpParams = new HttpParams();
         params = params.append('page', 0);
         params = params.append('team_ids[]', teamId);
 
         const dates: (string | null)[] = [...Array(12)].map((_, i) => {
-            const d = new Date();
+            const d: Date = new Date();
             d.setDate(d.getDate() - i);
             return this.datePipe.transform(d, 'yyyy-MM-dd');
         });
