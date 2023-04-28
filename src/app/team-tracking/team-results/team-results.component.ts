@@ -17,8 +17,8 @@ export class TeamResultsComponent implements OnInit, OnDestroy {
     subscriptions: Subscription = new Subscription();
 
     teamCode!: string;
-
     team!: TeamData;
+
     games$!: Observable<GameData[]>;
 
     constructor(private router: Router, private route: ActivatedRoute, private store: Store, private teamService: TeamService) {

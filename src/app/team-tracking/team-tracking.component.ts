@@ -34,7 +34,7 @@ export class TeamTrackingComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.teamIds$ = this.teamService.readTeamIds();
-        this.teams$! = this.store.getTeams();
+        this.teams$ = this.store.getTeams();
         this.subscriptions.add(this.teamService.getAllTeams().subscribe());
         this.subscriptions.add(this.store.getTeams().subscribe(teams => teams.forEach(team => this.teamsMap[team.id] = team)));
     }
