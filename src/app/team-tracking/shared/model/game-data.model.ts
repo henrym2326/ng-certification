@@ -11,6 +11,5 @@ export interface GameData {
     status: string;
     time: string;
     visitor_team: TeamData,
-    visitor_team_score: number,
-    team_id?: number;
+    visitor_team_score: number;
 }

@@ -74,7 +74,7 @@ export class TeamCardComponent implements OnInit, OnDestroy {
     }
 
     isHomeTeam(game: GameData): boolean {
-        return game.team_id == game.home_team.id;
+        return this.team.id == game.home_team.id;
     }
 
     ngOnDestroy(): void {
