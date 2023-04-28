@@ -39,7 +39,7 @@ export class TeamTrackingComponent implements OnInit, OnDestroy {
         this.subscriptions.add(this.store.getTeams().subscribe(teams => teams.forEach(team => this.teamsMap[team.id] = team)));
     }
 
-    submit() {
+    submit(): void {
         if (this.form.valid) {
             this.teamService.addTeamId(this.form.value['teamId']);
             this.form.get('teamId')?.patchValue('');

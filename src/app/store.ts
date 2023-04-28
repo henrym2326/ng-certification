@@ -12,7 +12,7 @@ export class Store {
     private subject: BehaviorSubject<State> = new BehaviorSubject<State>(state);
     private store: Observable<State> = this.subject.asObservable().pipe(distinctUntilChanged());
 
-    get value() {
+    get value(): State {
         return this.subject.value;
     }
 
@@ -30,19 +30,19 @@ export class Store {
         return this.store.pipe(map(state => state.games));
     }
 
-    setTeamIds(state: number[]) {
+    setTeamIds(state: number[]): void {
         this.subject.next({
             ...this.value, teamIds: state
         });
     }
 
-    setTeams(state: TeamData[]) {
+    setTeams(state: TeamData[]): void {
         this.subject.next({
             ...this.value, teams: state
         });
     }
 
-    setGames(teamId: number, state: GameData[]) {
+    setGames(teamId: number, state: GameData[]): void {
         const newState: State = {
             ...this.value
         };

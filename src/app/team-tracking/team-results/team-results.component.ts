@@ -39,7 +39,7 @@ export class TeamResultsComponent implements OnInit, OnDestroy {
         this.subscriptions.add(this.teamService.getGames(this.team.id).subscribe());
     }
 
-    ngOnDestroy() {
+    ngOnDestroy(): void {
         this.subscriptions.unsubscribe();
     }
 }
