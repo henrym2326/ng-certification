@@ -1,7 +1,7 @@
 <div *ngIf="(team$ | async) && (games$ | async); else loading" class="pt-3">
     <mat-card>
         <mat-card-title>
-            {{(team$ | async)?.city}} [{{(team$ | async)?.abbreviation}}]
+            {{(team$ | async)?.full_name}} [{{(team$ | async)?.abbreviation}}]
             <button id="remove{{(team$ | async)?.abbreviation}}" mat-button color="primary" aria-label="Remove Team" title="Remove Team"
                     (click)="remove()" style="float: right">
                 <mat-icon fontIcon="close"></mat-icon>

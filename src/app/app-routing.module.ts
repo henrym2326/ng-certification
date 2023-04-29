@@ -4,12 +4,12 @@ import {RouterModule, Routes} from '@angular/router';
 
 const routes: Routes = [
   {
-    path: 'team-tracking',
+    path: '',
     loadChildren: () => import('./team-tracking/team-tracking.module').then(m => m.TeamTrackingModule)
   },
   {
     path: '**',
-    redirectTo: 'team-tracking',
+    redirectTo: '',
     pathMatch: 'full'
   }
 ];

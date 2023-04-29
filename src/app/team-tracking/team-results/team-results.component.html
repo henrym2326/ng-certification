@@ -1,7 +1,7 @@
 <div *ngIf="(team$ | async) && (games$ | async); else loading">
     <mat-card>
         <mat-card-title>
-            {{(team$ | async)?.city}} [{{(team$ | async)?.abbreviation}}]
+            {{(team$ | async)?.full_name}} [{{(team$ | async)?.abbreviation}}]
         </mat-card-title>
         <mat-card-subtitle>{{(team$ | async)?.conference}}ern Conference</mat-card-subtitle>
         <mat-card-content>
@@ -23,7 +23,7 @@
             </ng-template>
         </mat-card-content>
         <mat-card-actions>
-            <button id="backBtn" mat-raised-button routerLink="/team-tracking" color="primary" aria-label="Back to all team stats"
+            <button id="backBtn" mat-raised-button routerLink="/" color="primary" aria-label="Back to all team stats"
                     title="Back to all team stats">
                 << Back to all team stats
             </button>
