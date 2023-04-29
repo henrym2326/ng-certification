@@ -29,7 +29,7 @@ export class TeamResultsComponent implements OnInit, OnDestroy {
         this.team$ = this.store.getTeams().pipe(switchMap(teams => teams), find(team => team.abbreviation == this.teamCode));
         this.subscriptions.add(this.team$.subscribe(team => {
             if (team) {
-                this.games$ = this.store.getGames().pipe(map(games => games[team!.id]));
+                this.games$ = this.store.getGames().pipe(map(games => games[team.id]));
                 this.teamService.getGames(team.id).pipe(take(1)).subscribe();
             }
         }));
