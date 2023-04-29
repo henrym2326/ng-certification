@@ -1,4 +1,4 @@
-<div *ngIf="(team$ | async) && (games$ | async)  else loading">
+<div *ngIf="(team$ | async) && (games$ | async); else loading">
     <mat-card>
         <mat-card-title>
             {{(team$ | async)?.city}} [{{(team$ | async)?.abbreviation}}]

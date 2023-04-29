@@ -73,9 +73,9 @@ export class TeamService {
         params = params.append('team_ids[]', teamId);
 
         const dates: (string | null)[] = [...Array(12)].map((_, i) => {
-            const d: Date = new Date();
-            d.setDate(d.getDate() - i);
-            return this.datePipe.transform(d, 'yyyy-MM-dd');
+            const date: Date = new Date();
+            date.setDate(date.getDate() - i);
+            return this.datePipe.transform(date, 'yyyy-MM-dd');
         });
 
         dates.forEach(date => {

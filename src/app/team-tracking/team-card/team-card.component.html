@@ -1,4 +1,4 @@
-<div *ngIf="(team$ | async) else loading" class="pt-3">
+<div *ngIf="(team$ | async) && (games$ | async); else loading" class="pt-3">
     <mat-card>
         <mat-card-title>
             {{(team$ | async)?.city}} [{{(team$ | async)?.abbreviation}}]
@@ -29,8 +29,8 @@
                         </ng-container>
                     </ng-container>
 
-                    <div class="pt-3">Avg pts scored: <b>{{avgPointsScored | number: '1.0-0'}}</b></div>
-                    <div class="pb-3">Avg pts conceded: <b>{{avgPointsConceded| number: '1.0-0'}}</b></div>
+                    <div class="pt-3">Avg pts scored: <b>{{getAvgPoints((games$ | async)!, true) | number: '1.0-0'}}</b></div>
+                    <div class="pb-3">Avg pts conceded: <b>{{getAvgPoints((games$ | async)!, false) | number: '1.0-0'}}</b></div>
                 </div>
 
                 <ng-template #no_results>
@@ -51,5 +51,4 @@
     </mat-card>
 </div>
 
-<ng-template #loading>
-</ng-template>
+<ng-template #loading></ng-template>

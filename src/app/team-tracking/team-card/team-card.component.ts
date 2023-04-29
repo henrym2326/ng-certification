@@ -20,16 +20,12 @@ export class TeamCardComponent implements OnInit, OnDestroy {
     team$!: Observable<TeamData | undefined>;
     games$!: Observable<GameData[]>;
 
-    avgPointsScored!: number;
-    avgPointsConceded!: number;
-
     constructor(private store: Store, private teamService: TeamService) {
     }
 
     ngOnInit(): void {
         this.team$ = this.store.getTeams().pipe(switchMap(teams => teams), find(team => team.id == this.teamId));
         this.games$ = this.store.getGames().pipe(map(games => games[this.teamId]));
-        this.subscriptions.add(this.games$.subscribe(games => this.calAvgPoints(games)));
         this.subscriptions.add(this.teamService.getGames(this.teamId).subscribe());
     }
 
@@ -55,23 +51,16 @@ export class TeamCardComponent implements OnInit, OnDestroy {
         return 'D';
     }
 
-    calAvgPoints(games: GameData[]): void {
-        let pointsScored: number = 0;
-        let pointsConceded: number = 0;
-
-        if (games) {
-            games.forEach((game, i) => {
-                if (this.isHomeTeam(game)) {
-                    pointsScored = pointsScored + game.home_team_score;
-                    pointsConceded = pointsConceded + game.visitor_team_score;
-                } else {
-                    pointsScored = pointsScored + game.visitor_team_score;
-                    pointsConceded = pointsConceded + game.home_team_score;
-                }
-            });
-            this.avgPointsScored = pointsScored / games.length;
-            this.avgPointsConceded = pointsConceded / games.length;
-        }
+    getAvgPoints(games: GameData[], poinstScored: boolean): number {
+        let points: number = 0;
+        games.forEach(game => {
+            if (this.isHomeTeam(game)) {
+                points = points + (poinstScored ? game.home_team_score : game.visitor_team_score);
+            } else {
+                points = points + (poinstScored ? game.visitor_team_score : game.home_team_score);
+            }
+        });
+        return points ? points / games.length : points;
     }
 
     isHomeTeam(game: GameData): boolean {

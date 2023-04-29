@@ -1,4 +1,4 @@
-<div *ngIf="(teams$ | async)?.length else loading">
+<div *ngIf="(teams$ | async)?.length; else loading">
     <div class="container-fluid">
         <form [formGroup]="form" (ngSubmit)="submit()" class="formGroup" #formDirective="ngForm">
             <div class="row pb-3">

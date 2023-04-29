@@ -17,9 +17,7 @@ export class TeamResultsComponent implements OnInit, OnDestroy {
 
     subscriptions: Subscription = new Subscription();
 
-    private team!: TeamData | undefined;
     teamCode!: string;
-
     team$!: Observable<TeamData | undefined>;
     games$!: Observable<GameData[]>;
 
@@ -30,14 +28,13 @@ export class TeamResultsComponent implements OnInit, OnDestroy {
         this.teamCode = `${this.route.snapshot.paramMap.get('teamCode')}`;
         this.team$ = this.store.getTeams().pipe(switchMap(teams => teams), find(team => team.abbreviation == this.teamCode));
         this.subscriptions.add(this.team$.subscribe(team => {
-            this.team = team;
-            if (this.team) {
-                this.games$ = this.store.getGames().pipe(map(games => games[this.team!.id]));
-                this.teamService.getGames(this.team.id).pipe(take(1)).subscribe();
+            if (team) {
+                this.games$ = this.store.getGames().pipe(map(games => games[team!.id]));
+                this.teamService.getGames(team.id).pipe(take(1)).subscribe();
             }
         }));
 
-        // needed if navigated via e.g. bookmark
+        // needed if teams store not initialised e.g. via bookmark
         this.subscriptions.add(this.teamService.getAllTeams().subscribe());
     }
 
